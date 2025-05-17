@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            color: #333;
+        }
+
+        .question {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            background: #f4f4f9;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: clamp(0.9rem, 3.5vw, 1rem);
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            background: #e0e0ff;
+        }
+
+        .option input {
+            margin-right: 10px;
+        }
+
+        .option.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .nav-button {
+            background: #6e8efb;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: clamp(0.8rem, 3vw, 1rem);
+            transition: background 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-button:hover {
+            background: #5a78e0;
+        }
+
+        .nav-button.active {
+            background: #a777e3;
+        }
+
+        .submit-button {
+            display: block;
+            margin: 20px auto 0;
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+            transition: background 0.3s;
+        }
+
+        .submit-button:hover {
+            background: #218838;
+        }
+
+        .question-block {
+            display: none;
+        }
+
+        .question-block.active {
+            display: block;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 500px) {
+            .quiz-container {
+                padding: 20px;
+            }
+
+            .option {
+                padding: 12px;
+            }
+
+            .nav-button {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+
+            .submit-button {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Class 1st Year Computer Science Quiz</h1>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-block active" id="question-1">
+            <div class="question">1. Another word for pointer:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q1" value="a" onclick="checkAnswer(1, 'a')"> Monochrome</label>
+                <label class="option"><input type="radio" name="q1" value="b" onclick="checkAnswer(1, 'b')"> Pixel</label>
+                <label class="option"><input type="radio" name="q1" value="c" onclick="checkAnswer(1, 'c')"> Cursor</label>
+                <label class="option"><input type="radio" name="q1" value="d" onclick="checkAnswer(1, 'd')"> None of the above</label>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-block" id="question-2">
+            <div class="question">2. Imaging uses what device to input data:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q2" value="a" onclick="checkAnswer(2, 'a')"> Scanner</label>
+                <label class="option"><input type="radio" name="q2" value="b" onclick="checkAnswer(2, 'b')"> Icon</label>
+                <label class="option"><input type="radio" name="q2" value="c" onclick="checkAnswer(2, 'c')"> Bar code reader</label>
+                <label class="option"><input type="radio" name="q2" value="d" onclick="checkAnswer(2, 'd')"> Tablet</label>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-block" id="question-3">
+            <div class="question">3. Smallest unit of memory is:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q3" value="a" onclick="checkAnswer(3, 'a')"> Byte</label>
+                <label class="option"><input type="radio" name="q3" value="b" onclick="checkAnswer(3, 'b')"> Bit</label>
+                <label class="option"><input type="radio" name="q3" value="c" onclick="checkAnswer(3, 'c')"> Character</label>
+                <label class="option"><input type="radio" name="q3" value="d" onclick="checkAnswer(3, 'd')"> Word</label>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-block" id="question-4">
+            <div class="question">4. An input device, which is used for playing computer games:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q4" value="a" onclick="checkAnswer(4, 'a')"> Light Pen</label>
+                <label class="option"><input type="radio" name="q4" value="b" onclick="checkAnswer(4, 'b')"> Mouse</label>
+                <label class="option"><input type="radio" name="q4" value="c" onclick="checkAnswer(4, 'c')"> Joy Stick</label>
+                <label class="option"><input type="radio" name="q4" value="d" onclick="checkAnswer(4, 'd')"> Scanner</label>
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-block" id="question-5">
+            <div class="question">5. A set of instructions that run the computer:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q5" value="a" onclick="checkAnswer(5, 'a')"> Hardware</label>
+                <label class="option"><input type="radio" name="q5" value="b" onclick="checkAnswer(5, 'b')"> Document</label>
+                <label class="option"><input type="radio" name="q5" value="c" onclick="checkAnswer(5, 'c')"> CPU</label>
+                <label class="option"><input type="radio" name="q5" value="d" onclick="checkAnswer(5, 'd')"> Software</label>
+            </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question-block" id="question-6">
+            <div class="question">6. CPU is an example of:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q6" value="a" onclick="checkAnswer(6, 'a')"> Software</label>
+                <label class="option"><input type="radio" name="q6" value="b" onclick="checkAnswer(6, 'b')"> A program</label>
+                <label class="option"><input type="radio" name="q6" value="c" onclick="checkAnswer(6, 'c')"> Hardware</label>
+                <label class="option"><input type="radio" name="q6" value="d" onclick="checkAnswer(6, 'd')"> An output unit</label>
+            </div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question-block" id="question-7">
+            <div class="question">7. Which is a storage device?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q7" value="a" onclick="checkAnswer(7, 'a')"> CPU</label>
+                <label class="option"><input type="radio" name="q7" value="b" onclick="checkAnswer(7, 'b')"> Clock</label>
+                <label class="option"><input type="radio" name="q7" value="c" onclick="checkAnswer(7, 'c')"> Floppy disk</label>
+                <label class="option"><input type="radio" name="q7" value="d" onclick="checkAnswer(7, 'd')"> Bus</label>
+            </div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question-block" id="question-8">
+            <div class="question">8. Which one is faster?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q8" value="a" onclick="checkAnswer(8, 'a')"> RAM</label>
+                <label class="option"><input type="radio" name="q8" value="b" onclick="checkAnswer(8, 'b')"> Cache</label>
+                <label class="option"><input type="radio" name="q8" value="c" onclick="checkAnswer(8, 'c')"> Register</label>
+                <label class="option"><input type="radio" name="q8" value="d" onclick="checkAnswer(8, 'd')"> Hard disk</label>
+            </div>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="question-block" id="question-9">
+            <div class="question">9. A computer derives its basic strength from?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q9" value="a" onclick="checkAnswer(9, 'a')"> Speed</label>
+                <label class="option"><input type="radio" name="q9" value="b" onclick="checkAnswer(9, 'b')"> Memory</label>
+                <label class="option"><input type="radio" name="q9" value="c" onclick="checkAnswer(9, 'c')"> Accuracy</label>
+                <label class="option"><input type="radio" name="q9" value="d" onclick="checkAnswer(9, 'd')"> All above</label>
+            </div>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="question-block" id="question-10">
+            <div class="question">10. An operating system is a:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q10" value="a" onclick="checkAnswer(10, 'a')"> System Utility</label>
+                <label class="option"><input type="radio" name="q10" value="b" onclick="checkAnswer(10, 'b')"> Application Software</label>
+                <label class="option"><input type="radio" name="q10" value="c" onclick="checkAnswer(10, 'c')"> System Software</label>
+                <label class="option"><input type="radio" name="q10" value="d" onclick="checkAnswer(10, 'd')"> Software package</label>
+            </div>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="question-block" id="question-11">
+            <div class="question">11. Ctrl+Alt+Del is:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q11" value="a" onclick="checkAnswer(11, 'a')"> An invalid key combination</label>
+                <label class="option"><input type="radio" name="q11" value="b" onclick="checkAnswer(11, 'b')"> Recognized by windows only</label>
+                <label class="option"><input type="radio" name="q11" value="c" onclick="checkAnswer(11, 'c')"> Used to close the active window</label>
+                <label class="option"><input type="radio" name="q11" value="d" onclick="checkAnswer(11, 'd')"> Both b and c</label>
+            </div>
+        </div>
+
+        <!-- Question 12 -->
+        <div class="question-block" id="question-12">
+            <div class="question">12. Windows explorer is used to:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q12" value="a" onclick="checkAnswer(12, 'a')"> Access the internet</label>
+                <label class="option"><input type="radio" name="q12" value="b" onclick="checkAnswer(12, 'b')"> Explore system resources</label>
+                <label class="option"><input type="radio" name="q12" value="c" onclick="checkAnswer(12, 'c')"> Perform maintenance on the hard disk</label>
+                <label class="option"><input type="radio" name="q12" value="d" onclick="checkAnswer(12, 'd')"> Navigate files and folder</label>
+            </div>
+        </div>
+
+        <!-- Question 13 -->
+        <div class="question-block" id="question-13">
+            <div class="question">13. Which of the following is a word processor?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q13" value="a" onclick="checkAnswer(13, 'a')"> Adobe Acrobat</label>
+                <label class="option"><input type="radio" name="q13" value="b" onclick="checkAnswer(13, 'b')"> Photo Express</label>
+                <label class="option"><input type="radio" name="q13" value="c" onclick="checkAnswer(13, 'c')"> MS. Excel</label>
+                <label class="option"><input type="radio" name="q13" value="d" onclick="checkAnswer(13, 'd')"> Ms. Word</label>
+            </div>
+        </div>
+
+        <!-- Question 14 -->
+        <div class="question-block" id="question-14">
+            <div class="question">14. In MS Word the data that is being copied or moved is:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q14" value="a" onclick="checkAnswer(14, 'a')"> Temporarily stored in Recycle Bin</label>
+                <label class="option"><input type="radio" name="q14" value="b" onclick="checkAnswer(14, 'b')"> Permanently stored in Recycle Bin</label>
+                <label class="option"><input type="radio" name="q14" value="c" onclick="checkAnswer(14, 'c')"> Temporarily stored in Clipboard</label>
+                <label class="option"><input type="radio" name="q14" value="d" onclick="checkAnswer(14, 'd')"> Permanently stored in Clipboard</label>
+            </div>
+        </div>
+
+        <!-- Question 15 -->
+        <div class="question-block" id="question-15">
+            <div class="question">15. Which of the following can be used to launch the Word Art?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q15" value="a" onclick="checkAnswer(15, 'a')"> Status bar</label>
+                <label class="option"><input type="radio" name="q15" value="b" onclick="checkAnswer(15, 'b')"> Ruler</label>
+                <label class="option"><input type="radio" name="q15" value="c" onclick="checkAnswer(15, 'c')"> Standard toolbar</label>
+                <label class="option"><input type="radio" name="q15" value="d" onclick="checkAnswer(15, 'd')"> Drawing toolbar</label>
+            </div>
+        </div>
+
+        <!-- Question 16 -->
+        <div class="question-block" id="question-16">
+            <div class="question">16. Which of the following keyboard shortcuts is used to change the case?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q16" value="a" onclick="checkAnswer(16, 'a')"> Ctrl + F3</label>
+                <label class="option"><input type="radio" name="q16" value="b" onclick="checkAnswer(16, 'b')"> Shift + F3</label>
+                <label class="option"><input type="radio" name="q16" value="c" onclick="checkAnswer(16, 'c')"> Alt + F3</label>
+                <label class="option"><input type="radio" name="q16" value="d" onclick="checkAnswer(16, 'd')"> Ctrl + Shift + F3</label>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation">
+            <button class="nav-button active" onclick="showQuestion(1)">1</button>
+            <button class="nav-button" onclick="showQuestion(2)">2</button>
+            <button class="nav-button" onclick="showQuestion(3)">3</button>
+            <button class="nav-button" onclick="showQuestion(4)">4</button>
+            <button class="nav-button" onclick="showQuestion(5)">5</button>
+            <button class="nav-button" onclick="showQuestion(6)">6</button>
+            <button class="nav-button" onclick="showQuestion(7)">7</button>
+            <button class="nav-button" onclick="showQuestion(8)">8</button>
+            <button class="nav-button" onclick="showQuestion(9)">9</button>
+            <button class="nav-button" onclick="showQuestion(10)">10</button>
+            <button class="nav-button" onclick="showQuestion(11)">11</button>
+            <button class="nav-button" onclick="showQuestion(12)">12</button>
+            <button class="nav-button" onclick="showQuestion(13)">13</button>
+            <button class="nav-button" onclick="showQuestion(14)">14</button>
+            <button class="nav-button" onclick="showQuestion(15)">15</button>
+            <button class="nav-button" onclick="showQuestion(16)">16</button>
+        </div>
+
+        <!-- Submit Button -->
+        <button class="submit-button" onclick="submitQuiz()">Submit Quiz</button>
+    </div>
+
+    <script>
+        // Correct answers for each question
+        const correctAnswers = {
+            1: 'c',  // Cursor
+            2: 'a',  // Scanner
+            3: 'b',  // Bit
+            4: 'c',  // Joy Stick
+            5: 'd',  // Software
+            6: 'c',  // Hardware
+            7: 'c',  // Floppy disk
+            8: 'c',  // Register
+            9: 'd',  // All above
+            10: 'c', // System Software
+            11: 'b', // Recognized by windows only
+            12: 'd', // Navigate files and folder
+            13: 'd', // Ms. Word
+            14: 'c', // Temporarily stored in Clipboard
+            15: 'd', // Drawing toolbar
+            16: 'b'  // Shift + F3
+        };
+
+        // Store user answers
+        const userAnswers = {};
+
+        function showQuestion(questionNumber) {
+            // Hide all questions
+            document.querySelectorAll('.question-block').forEach(block => {
+                block.classList.remove('active');
+            });
+
+            // Show selected question
+            document.getElementById(`question-${questionNumber}`).classList.add('active');
+
+            // Update active button
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`.nav-button:nth-child(${questionNumber})`).classList.add('active');
+
+            // Reset option styles and enable inputs when switching questions
+            resetOptionStyles(questionNumber);
+        }
+
+        function resetOptionStyles(questionNumber) {
+            const options = document.querySelectorAll(`#question-${questionNumber} .option`);
+            const inputs = document.querySelectorAll(`#question-${questionNumber} input`);
+            options.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+            inputs.forEach(input => {
+                input.disabled = false;
+                // Restore previously selected answer if exists
+                input.checked = userAnswers[questionNumber] === input.value;
+            });
+        }
+
+        function checkAnswer(questionNumber, selectedValue) {
+            const correctValue = correctAnswers[questionNumber];
+            const options = document.querySelectorAll(`#question-${questionNumber} .option`);
+            const inputs = document.querySelectorAll(`#question-${questionNumber} input`);
+
+            // Store the user's answer
+            userAnswers[questionNumber] = selectedValue;
+
+            // Disable all options after selection
+            inputs.forEach(input => {
+                input.disabled = true;
+            });
+
+            // Highlight selected and correct answers
+            options.forEach(option => {
+                const input = option.querySelector('input');
+                if (input.value === selectedValue) {
+                    option.classList.add(selectedValue === correctValue ? 'correct' : 'incorrect');
+                }
+                if (input.value === correctValue) {
+                    option.classList.add('correct');
+                }
+            });
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+
+            // Calculate score
+            for (let questionNumber in correctAnswers) {
+                if (userAnswers[questionNumber] === correctAnswers[questionNumber]) {
+                    score++;
+                }
+            }
+
+            // Show score
+            alert(`Your score: ${score}/${totalQuestions}`);
+        }
+    </script>
+</body>
+</html>
